@@ -19,7 +19,7 @@ export function getGenAIClient(): GoogleGenAI {
  * Handles Markdown code fences, conversational prose, trailing commas,
  * and minor formatting deviations.
  */
-export function extractAndValidateJson<T>(rawText: string, schema: z.ZodSchema<T>): T {
+export function extractAndValidateJson<T>(rawText: string, schema: z.ZodType<T, any, any>): T {
   let cleaned = rawText.trim();
 
   // 1. Remove markdown fences if present

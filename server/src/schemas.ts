@@ -9,10 +9,10 @@ export const SingleJudgeResultSchema = z.object({
   risks: z.array(z.string()).default([])
 });
 
-export type SingleJudgeResult = z.infer<typeof SingleJudgeResultSchema>;
+export type SingleJudgeResult = z.output<typeof SingleJudgeResultSchema>;
 
 export const JudgeRoleEnum = z.enum(['skeptic', 'expert', 'beginner', 'verifier']);
-export type JudgeRole = z.infer<typeof JudgeRoleEnum>;
+export type JudgeRole = z.output<typeof JudgeRoleEnum>;
 
 export const JudgeRoleResultSchema = z.object({
   role: JudgeRoleEnum,
@@ -26,7 +26,7 @@ export const JudgeRoleResultSchema = z.object({
   error: z.string().optional()
 });
 
-export type JudgeRoleResult = z.infer<typeof JudgeRoleResultSchema>;
+export type JudgeRoleResult = z.output<typeof JudgeRoleResultSchema>;
 
 export const DisagreementItemSchema = z.object({
   topic: z.string().default('Disagreement'),
@@ -35,10 +35,10 @@ export const DisagreementItemSchema = z.object({
   resolution: z.string().default('')
 });
 
-export type DisagreementItem = z.infer<typeof DisagreementItemSchema>;
+export type DisagreementItem = z.output<typeof DisagreementItemSchema>;
 
 export const ReliabilityAssessmentEnum = z.enum(['improved', 'unchanged', 'worse', 'uncertain']);
-export type ReliabilityAssessment = z.infer<typeof ReliabilityAssessmentEnum>;
+export type ReliabilityAssessment = z.output<typeof ReliabilityAssessmentEnum>;
 
 export const ConsensusResultSchema = z.object({
   final_verdict: z.string().default('INCONCLUSIVE'),
@@ -52,7 +52,7 @@ export const ConsensusResultSchema = z.object({
   reliability_assessment: ReliabilityAssessmentEnum.default('uncertain')
 });
 
-export type ConsensusResult = z.infer<typeof ConsensusResultSchema>;
+export type ConsensusResult = z.output<typeof ConsensusResultSchema>;
 
 export const ComparisonResultSchema = z.object({
   decisionChanged: z.boolean(),
@@ -62,7 +62,7 @@ export const ComparisonResultSchema = z.object({
   explanation: z.string()
 });
 
-export type ComparisonResult = z.infer<typeof ComparisonResultSchema>;
+export type ComparisonResult = z.output<typeof ComparisonResultSchema>;
 
 export const BenchmarkCaseSchema = z.object({
   id: z.string(),
@@ -75,7 +75,7 @@ export const BenchmarkCaseSchema = z.object({
   explanation: z.string()
 });
 
-export type BenchmarkCase = z.infer<typeof BenchmarkCaseSchema>;
+export type BenchmarkCase = z.output<typeof BenchmarkCaseSchema>;
 
 export const BenchmarkCaseResultSchema = z.object({
   id: z.string(),
@@ -94,7 +94,7 @@ export const BenchmarkCaseResultSchema = z.object({
   analysis: z.string()
 });
 
-export type BenchmarkCaseResult = z.infer<typeof BenchmarkCaseResultSchema>;
+export type BenchmarkCaseResult = z.output<typeof BenchmarkCaseResultSchema>;
 
 export const BenchmarkSummarySchema = z.object({
   totalCases: z.number(),
@@ -115,4 +115,4 @@ export const BenchmarkSummarySchema = z.object({
   executionDate: z.string()
 });
 
-export type BenchmarkSummary = z.infer<typeof BenchmarkSummarySchema>;
+export type BenchmarkSummary = z.output<typeof BenchmarkSummarySchema>;
