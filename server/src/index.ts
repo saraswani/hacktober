@@ -3,6 +3,7 @@ import cors from 'cors';
 import { config } from './config.js';
 import { healthRouter } from './routes/health.js';
 import { judgeRouter } from './routes/judge.js';
+import { benchmarkRouter } from './routes/benchmark.js';
 
 export const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 // Routes
 app.use('/api/health', healthRouter);
 app.use('/api/judge', judgeRouter);
+app.use('/api/benchmark', benchmarkRouter);
 
 // Basic root route
 app.get('/', (_req, res) => {

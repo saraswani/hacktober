@@ -39,4 +39,18 @@ describe('Express API Routes', () => {
     expect(res.body).toHaveProperty('code', 'MISSING_API_KEY');
     expect(res.body).toHaveProperty('instructions');
   });
+
+  it('GET /api/benchmark/cases returns all 12 benchmark test cases', async () => {
+    const res = await request(app).get('/api/benchmark/cases');
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty('total', 12);
+    expect(res.body.cases).toHaveLength(12);
+    expect(res.body.cases[0]).toHaveProperty('groundTruthVerdict');
+  });
+
+  it('GET /api/benchmark/latest returns benchmark execution state', async () => {
+    const res = await request(app).get('/api/benchmark/latest');
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty('hasRun');
+  });
 });
