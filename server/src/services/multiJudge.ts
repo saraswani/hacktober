@@ -64,9 +64,18 @@ export async function runMultiJudge(
   imageBase64?: string,
   mimeType?: string
 ): Promise<{ judges: JudgeRoleResult[]; availableCount: number }> {
-  // Fire all 4 requests concurrently in complete isolation
-  const rolePromises = ROLES.map((r) => runSingleRoleJudge(r, prompt, imageBase64, mimeType));
-  const settled = await Promise.allSettled(rolePromises);
+  // Process judges in batches to avoid overwhelming the API concurrency limits
+  const settled: PromiseSettledResult<JudgeRoleResult>[] = [];
+  
+  // Batch 1
+  const batch1 = ROLES.slice(0, 2).map((r) => runSingleRoleJudge(r, prompt, imageBase64, mimeType));
+  const settled1 = await Promise.allSettled(batch1);
+  settled.push(...settled1);
+  
+  // Batch 2
+  const batch2 = ROLES.slice(2, 4).map((r) => runSingleRoleJudge(r, prompt, imageBase64, mimeType));
+  const settled2 = await Promise.allSettled(batch2);
+  settled.push(...settled2);
 
   const judges: JudgeRoleResult[] = settled.map((result, idx) => {
     if (result.status === 'fulfilled') {

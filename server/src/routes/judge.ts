@@ -85,15 +85,12 @@ judgeRouter.post('/both', validatePrompt, requireApiKey, async (req: Request, re
     const { prompt, imageBase64, mimeType } = req.body;
     const trimmedPrompt = prompt.trim();
 
-    // Run baseline and 4-judge jury in parallel
-    const [singleResult, multiRun] = await Promise.all([
-      runSingleJudge(trimmedPrompt, imageBase64, mimeType),
-      (async () => {
-        const { judges, availableCount } = await runMultiJudge(trimmedPrompt, imageBase64, mimeType);
-        const consensus = await runConsensus(trimmedPrompt, judges);
-        return { judges, consensus, availableCount };
-      })()
-    ]);
+    // Run baseline first, then run multi-judge to avoid overwhelming the Gemini API with concurrent requests
+    const singleResult = await runSingleJudge(trimmedPrompt, imageBase64, mimeType);
+
+    const { judges, availableCount } = await runMultiJudge(trimmedPrompt, imageBase64, mimeType);
+    const consensus = await runConsensus(trimmedPrompt, judges);
+    const multiRun = { judges, consensus, availableCount };
 
     const decisionChanged = singleResult.verdict !== multiRun.consensus.final_verdict;
     const scoreDelta = multiRun.consensus.final_score - singleResult.score;
