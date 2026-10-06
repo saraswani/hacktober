@@ -89,10 +89,17 @@ export const JudgeView: React.FC<JudgeViewProps> = ({
     setIsRunning(true);
     setCurrentStage(1);
 
-    // Progression timer to advance stages visually while API resolves
+    // Progression timer calibrated to actual deliberation flow
+    let elapsed = 0;
     const stageInterval = setInterval(() => {
-      setCurrentStage((prev: number) => (prev < 6 ? prev + 1 : prev));
-    }, 900);
+      elapsed += 1;
+      if (elapsed === 3) setCurrentStage(2);
+      else if (elapsed === 6) setCurrentStage(3);
+      else if (elapsed === 9) setCurrentStage(4);
+      else if (elapsed === 12) setCurrentStage(5);
+      else if (elapsed === 16) setCurrentStage(6);
+      else if (elapsed === 22) setCurrentStage(7);
+    }, 1000);
 
     try {
       await onRunBoth(prompt, imageBase64, mimeType);
@@ -136,8 +143,14 @@ export const JudgeView: React.FC<JudgeViewProps> = ({
     setIsRunning(true);
     setCurrentStage(2);
 
+    let elapsed = 0;
     const stageInterval = setInterval(() => {
-      setCurrentStage((prev: number) => (prev < 6 ? prev + 1 : prev));
+      elapsed += 1;
+      if (elapsed === 3) setCurrentStage(3);
+      else if (elapsed === 6) setCurrentStage(4);
+      else if (elapsed === 9) setCurrentStage(5);
+      else if (elapsed === 13) setCurrentStage(6);
+      else if (elapsed === 18) setCurrentStage(7);
     }, 1000);
 
     try {

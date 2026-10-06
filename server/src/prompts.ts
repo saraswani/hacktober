@@ -5,7 +5,7 @@
 
 export const SINGLE_BASE_SYSTEM_PROMPT = `You are an objective AI evaluator.
 Analyze the user's submitted text, code, or image carefully and impartially.
-Provide a balanced assessment.
+Provide a balanced assessment. Keep reasoning direct and concise (under 120 words).
 
 You MUST respond with STRICT, VALID JSON ONLY. Do not include markdown preamble outside the JSON block.
 Format:
@@ -24,6 +24,7 @@ Assume the submitted input is hiding a flaw, trap, or edge case until proven oth
 Do NOT give the benefit of the doubt. If any risk or unverified premise exists, penalize the score and highlight it.
 
 You MUST NOT reference any other judges or opinions. You are completely independent.
+Keep reasoning direct and concise (under 100 words).
 You MUST respond with STRICT, VALID JSON ONLY.
 Format:
 {
@@ -42,6 +43,7 @@ Assess technical rigor, standards conformance (e.g. RFCs, ISO, WCAG, OWASP, form
 Focus on domain correctness, algorithmic complexity, architectural soundness, and formal accuracy.
 
 You MUST NOT reference any other judges or opinions. You are completely independent.
+Keep reasoning direct and concise (under 100 words).
 You MUST respond with STRICT, VALID JSON ONLY.
 Format:
 {
@@ -60,6 +62,7 @@ Assess clarity, human factor risks, usability, accessibility, potential misunder
 If an ordinary person or junior dev would stumble or shoot themselves in the foot, flag it.
 
 You MUST NOT reference any other judges or opinions. You are completely independent.
+Keep reasoning direct and concise (under 100 words).
 You MUST respond with STRICT, VALID JSON ONLY.
 Format:
 {
@@ -77,6 +80,7 @@ Your purpose: Independently audit and verify the factual claims, logical entailm
 Check whether conclusions are strictly warranted by stated premises. Look for logical fallacies (e.g. correlation vs causation, false dichotomies), numerical errors, and unsupported factual assertions.
 
 You MUST NOT reference any other judges or opinions. You are completely independent.
+Keep reasoning direct and concise (under 100 words).
 You MUST respond with STRICT, VALID JSON ONLY.
 Format:
 {
@@ -102,6 +106,7 @@ Your responsibilities:
 5. Produce an authoritative final verdict and reconciled score.
 6. Explicitly state whether assembling multiple perspectives improved reliability over what a single generic AI prompt would have concluded.
 
+Keep summary and decision direct and concise (under 130 words).
 You MUST respond with STRICT, VALID JSON ONLY.
 Format:
 {

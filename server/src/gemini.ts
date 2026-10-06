@@ -106,7 +106,8 @@ export async function generateGemmaContent(
     contents: contents as any,
     config: {
       systemInstruction: systemInstruction,
-      temperature: 0.2 // Low temperature for high analytical consistency
+      temperature: 0.2, // Low temperature for high analytical consistency
+      maxOutputTokens: 1024
     }
   });
 

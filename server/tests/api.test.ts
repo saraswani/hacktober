@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import request from 'supertest';
 import { app } from '../src/index.js';
+import { config } from '../src/config.js';
 
 describe('Express API Routes', () => {
   it('GET /api/health returns health status and model configuration', async () => {
@@ -30,14 +31,19 @@ describe('Express API Routes', () => {
   });
 
   it('POST /api/judge/single returns 503 with configuration advice when API key is missing', async () => {
-    const res = await request(app)
-      .post('/api/judge/single')
-      .send({ prompt: 'Valid prompt but no API key configured' });
-    
-    // When API key is not configured in test environment
-    expect(res.status).toBe(503);
-    expect(res.body).toHaveProperty('code', 'MISSING_API_KEY');
-    expect(res.body).toHaveProperty('instructions');
+    const originalState = config.isApiKeyConfigured;
+    (config as any).isApiKeyConfigured = false;
+    try {
+      const res = await request(app)
+        .post('/api/judge/single')
+        .send({ prompt: 'Valid prompt but no API key configured' });
+      
+      expect(res.status).toBe(503);
+      expect(res.body).toHaveProperty('code', 'MISSING_API_KEY');
+      expect(res.body).toHaveProperty('instructions');
+    } finally {
+      (config as any).isApiKeyConfigured = originalState;
+    }
   });
 
   it('GET /api/benchmark/cases returns all 12 benchmark test cases', async () => {
