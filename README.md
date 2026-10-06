@@ -42,27 +42,65 @@ VERDICT decouples problem evaluation into parallel, specialized cognitive roles.
 ### Complete Independence Guarantee
 A critical design requirement of VERDICT is **strict isolation**. Under no circumstances do the four judges see each other's outputs or share context before the deliberation stage. Each judge evaluates the original input solely through its specialized system instructions.
 
-```
-                     +----------------------------------------+
-                     |         Original User Problem          |
-                     +----------------------------------------+
-                                          |
-                +-------------------------+-------------------------+
-                |                         |                         |
-                v                         v                         v
-     +--------------------+    +--------------------+    +--------------------+    +--------------------+
-     |   ROLE: SKEPTIC    |    |    ROLE: EXPERT    |    |   ROLE: BEGINNER   |    |   ROLE: VERIFIER   |
-     |  Adversarial Audit |    | Industry Standards |    | Usability & Jargon |    | Factual Entailment |
-     +--------------------+    +--------------------+    +--------------------+    +--------------------+
-                |                         |                         |                         |
-                +-------------------------+-------------------------+-------------------------+
-                                          | (Isolated Structured JSON Responses)
-                                          v
-                     +----------------------------------------+
-                     |        CONSENSUS RECONCILER            |
-                     |  Arbitrates tensions, ranks arguments, |
-                     |  measures agreement %, decides verdict |
-                     +----------------------------------------+
+```mermaid
+flowchart TD
+    %% Styling Definitions
+    classDef inputStyle fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#e0e7ff;
+    classDef singleStyle fill:#1f2937,stroke:#9ca3af,stroke-width:1px,color:#f3f4f6;
+    classDef judgeStyle fill:#0f172a,stroke:#38bdf8,stroke-width:1.5px,color:#f8fafc;
+    classDef reconcilerStyle fill:#4c1d95,stroke:#c084fc,stroke-width:2px,color:#faf5ff;
+    classDef deltaStyle fill:#064e3b,stroke:#34d399,stroke-width:1.5px,color:#ecfdf5;
+    classDef benchStyle fill:#78350f,stroke:#fbbf24,stroke-width:1.5px,color:#fffbeb;
+
+    %% 1. Input Layer
+    subgraph S1 ["1. Input Layer"]
+        INP["User Query / Code / Ambiguous Dilemma / Image"]:::inputStyle
+    end
+
+    %% 2. Execution Paths
+    subgraph S2 ["2. Dual-Track Execution Engine (Gemma 4: gemma-4-26b-a4b-it)"]
+        direction TB
+
+        %% Track A: Baseline
+        subgraph TrackA ["Track A: Single Baseline"]
+            BL["Monolithic Single Model Call<br/>• Single composite evaluation<br/>• Prone to premature confirmation<br/>• Monolithic confidence"]:::singleStyle
+        end
+
+        %% Track B: Isolated Jury
+        subgraph TrackB ["Track B: The 4 Independent Judges (Strict Zero-Communication Isolation)"]
+            direction LR
+            J1["THE SKEPTIC<br/>• Adversarial flaws<br/>• Hidden assumptions<br/>• Security & exploits"]:::judgeStyle
+            J2["DOMAIN EXPERT<br/>• RFC/ISO standards<br/>• Architectural depth<br/>• Production rigor"]:::judgeStyle
+            J3["THE BEGINNER<br/>• Human factors<br/>• Usability pitfalls<br/>• Ergonomic footguns"]:::judgeStyle
+            J4["THE VERIFIER<br/>• Formal logic<br/>• Mathematical steps<br/>• Fallacy detection"]:::judgeStyle
+        end
+    end
+
+    INP -->|"Direct Prompt"| BL
+    INP -->|"Isolated Prompt"| J1
+    INP -->|"Isolated Prompt"| J2
+    INP -->|"Isolated Prompt"| J3
+    INP -->|"Isolated Prompt"| J4
+
+    %% 3. Consensus & Reconciliation
+    subgraph S3 ["3. Consensus Deliberation Layer"]
+        CR["Gemma 4 Consensus Arbitrator<br/>• Resolves inter-judge tension<br/>• Weighted argument hierarchy (Safety/Truth > Headcount)<br/>• Computes agreement %<br/>• Produces synthesized final verdict"]:::reconcilerStyle
+    end
+
+    J1 -->|"Structured JSON"| CR
+    J2 -->|"Structured JSON"| CR
+    J3 -->|"Structured JSON"| CR
+    J4 -->|"Structured JSON"| CR
+
+    %% 4. Comparative Evaluation & Evidence Lab
+    subgraph S4 ["4. Reliability Differential & Evidence Lab"]
+        COMP["Differential Analysis Engine<br/>• Detects Overturns (Single vs Consensus)<br/>• Calculates Score & Confidence Deltas<br/>• Classifies Outcome: Improved | Unchanged | Worse"]:::deltaStyle
+        BENCH["12-Case Ground-Truth Benchmark<br/>• Security Vulnerabilities<br/>• Ambiguous Ethical Dilemmas<br/>• Standard Negative Controls"]:::benchStyle
+    end
+
+    BL --> COMP
+    CR --> COMP
+    COMP -.-> BENCH
 ```
 
 ### The Four Roles:
