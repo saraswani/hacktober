@@ -37,10 +37,11 @@ judgeRouter.post('/single', validatePrompt, requireApiKey, async (req: Request, 
     res.json(result);
   } catch (error: any) {
 
-    console.error('Error in /api/judge/single:', error);
+    const errorDetail = error?.message || 'Failed to run single model baseline.';
+    console.error('Error in /api/judge/single:', errorDetail);
     res.status(500).json({
-      error: 'Failed to run single model baseline.',
-      message: error?.message || 'Internal server error'
+      error: errorDetail,
+      message: errorDetail
     });
   }
 });
@@ -66,10 +67,11 @@ judgeRouter.post('/multi', validatePrompt, requireApiKey, async (req: Request, r
       totalJudgesCount: judges.length
     });
   } catch (error: any) {
-    console.error('Error in /api/judge/multi:', error);
+    const errorDetail = error?.message || 'Failed to execute multi-judge jury.';
+    console.error('Error in /api/judge/multi:', errorDetail);
     res.status(500).json({
-      error: 'Failed to execute multi-judge jury.',
-      message: error?.message || 'Internal server error'
+      error: errorDetail,
+      message: errorDetail
     });
   }
 });
@@ -122,10 +124,11 @@ judgeRouter.post('/both', validatePrompt, requireApiKey, async (req: Request, re
       comparison
     });
   } catch (error: any) {
-    console.error('Error in /api/judge/both:', error);
+    const errorDetail = error?.message || 'Failed to run comparative evaluation.';
+    console.error('Error in /api/judge/both:', errorDetail);
     res.status(500).json({
-      error: 'Failed to run comparative evaluation.',
-      message: error?.message || 'Internal server error'
+      error: errorDetail,
+      message: errorDetail
     });
   }
 });
