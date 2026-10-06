@@ -241,7 +241,3 @@ npm run build
 ## 11. License
 
 This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
-#   h a c k t o b e r  
- #   h a c k t o b e r  
- #   h a c k t o b e r  
- 

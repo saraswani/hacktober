@@ -5,8 +5,7 @@ async function testGemma4Connection() {
   console.log('====================================================');
   console.log('VERDICT - Gemma 4 Backend Connection Test');
   console.log('====================================================');
-  console.log(`Target Model: ${config.modelName}`);
-  console.log(`API Key Value Detected: ${config.geminiApiKey ? `${config.geminiApiKey.substring(0, 10)}...` : 'EMPTY'}`);
+  console.log(`API Key Status: ${config.geminiApiKey ? 'Configured (secure)' : 'NOT CONFIGURED'}`);
 
   if (!config.geminiApiKey || config.geminiApiKey.trim().length === 0) {
     console.log('\n[!] GEMINI_API_KEY is empty in server/.env.');
