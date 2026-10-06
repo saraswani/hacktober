@@ -107,13 +107,31 @@ export async function generateGemmaContent(
     config: {
       systemInstruction: systemInstruction,
       temperature: 0.2, // Low temperature for high analytical consistency
-      maxOutputTokens: 1024
+      maxOutputTokens: 4096
     }
   });
 
-  const text = response.text || '';
+  let text = response.text?.trim() || '';
+
+  // Defensive fallback: inspect candidate parts directly
+  if (!text && response.candidates?.[0]?.content?.parts) {
+    const textParts = response.candidates[0].content.parts
+      .filter((p: any) => p.text && !p.thought)
+      .map((p: any) => p.text);
+    text = textParts.join('\n').trim();
+  }
+
+  // If still empty but thought exists, fallback to thought content rather than hard crashing
+  if (!text && response.candidates?.[0]?.content?.parts) {
+    const anyParts = response.candidates[0].content.parts
+      .filter((p: any) => p.text)
+      .map((p: any) => p.text);
+    text = anyParts.join('\n').trim();
+  }
+
   if (!text) {
-    throw new Error('Gemma model returned an empty response.');
+    const finishReason = response.candidates?.[0]?.finishReason || 'UNKNOWN';
+    throw new Error(`Gemma model returned an empty response (Finish Reason: ${finishReason}).`);
   }
 
   return text;
