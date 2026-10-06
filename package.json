@@ -1,0 +1,30 @@
+{
+  "name": "verdict",
+  "version": "1.0.0",
+  "description": "Evidence-driven multi-perspective AI reliability engine powered by Gemma 4",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=server\" \"npm run dev --workspace=client\"",
+    "build": "npm run build --workspace=server && npm run build --workspace=client",
+    "test": "npm run test --workspace=server && npm run test --workspace=client",
+    "server": "npm run dev --workspace=server",
+    "client": "npm run dev --workspace=client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "keywords": [
+    "gemma",
+    "gemma-4",
+    "ai-reliability",
+    "multi-agent",
+    "consensus",
+    "hackathon"
+  ],
+  "author": "Verdict Team",
+  "license": "MIT"
+}
